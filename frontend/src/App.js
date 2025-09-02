@@ -19,19 +19,28 @@ const supabase = createClient(
 );
 
 function App() {
-  const [salas, getSalas] = useState([]);
+  const [salas, setSalas] = useState([]);
   const [filtro, setFiltro] = useState("");
+  const [dados,setDados] = useState([]);
   useEffect(() => {
     const fetchSalas = async () => {
-      const { data, error } = await supabase.from("salas_2025_2").select("*").ilike('disciplina', `%${filtro}%`)
+      const { data, error } = await supabase.from("salas_2025_2").select("*");
       if (error) {
-        console.error("Error fetching salas:", error)
+        console.error("Error fetching salas:", error);
       } else {
-        getSalas(data)
+        setSalas(data);
       }
     }
-    fetchSalas()
-  }, [filtro])
+    fetchSalas();
+  }, [])
+  useEffect(() => {
+    const aplicarFiltro = async () => {
+      const busca = filtro;
+      const resultados = salas.filter((sala) => sala.disciplina.toLowerCase().includes(busca.toLowerCase()));
+      setDados(resultados);
+    }
+    aplicarFiltro()
+  }, [salas,filtro])
   return (
     <div className="App">
       <div>
@@ -57,7 +66,7 @@ function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {salas.map((sala) => (
+              {dados.map((sala) => (
                 <TableRow key={sala.id}>
                   <TableCell component="th" scope="row">
                     {sala.turma}
