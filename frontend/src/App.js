@@ -44,8 +44,9 @@ function App() {
   return (
     <div className="App">
       <div>
-        <h1>Salas do DC</h1>
-        <TextField id="outlined-basic" label="Disciplina" variant="outlined" 
+        <h1>Salas do DC - 2025.2</h1>
+        <h2>Em construção... Em breve novos filtros...</h2>
+        <TextField id="outlined-basic" label="Filtro por Disciplina" variant="outlined" 
           onChange={
             (e) => {
               setFiltro(e.target.value);
