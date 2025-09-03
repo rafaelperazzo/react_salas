@@ -9,6 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 console.log(process.env.REACT_APP_SUPABASE_URL);
 console.log(process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY);
@@ -22,6 +25,8 @@ function App() {
   const [salas, setSalas] = useState([]);
   const [filtro, setFiltro] = useState("");
   const [dados,setDados] = useState([]);
+  const [lista_salas,setLista_salas] = useState([]);
+  const [salaSelecionada, setSalaSelecionada] = useState("JVS::02");
   useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("salas_2025_2").select("*");
@@ -41,18 +46,56 @@ function App() {
     }
     aplicarFiltro()
   }, [salas,filtro])
+  useEffect(() => {
+    const fetch_lista_salas = async () => {
+      const { data, error } = await supabase.from("salas").select("*");
+      if (error) {
+        console.error("Error fetching lista_salas:", error);
+      } else {
+        setLista_salas(data);
+      }
+    }
+    fetch_lista_salas();
+  }, [])
   return (
     <div className="App">
       <div>
-        <h1>Salas do DC - 2025.2</h1>
-        <h2>Em construção... Em breve novos filtros...</h2>
-        <TextField id="outlined-basic" label="Filtro por Disciplina" variant="outlined" 
-          onChange={
-            (e) => {
-              setFiltro(e.target.value);
-            }
-          }
-        />
+        <h1>Alocação de Salas do DC - 2025.2</h1>
+      </div>
+      <div>
+          <Stack direction="row" spacing={2}>
+              <TextField id="outlined-basic" label="Filtro por Disciplina" variant="outlined" 
+                onChange={
+                  (e) => {
+                    setFiltro(e.target.value);
+                  }
+                }
+              />
+              <Select
+                labelId="select-sala-label"
+                id="select-sala"
+                value={salaSelecionada}
+                label="Sala"
+                onChange={(e) => {
+                  setSalaSelecionada(e.target.value);
+                  if (e.target.value === "TODAS") {
+                    setDados(salas);
+                  } else {
+                    const resultados = salas.filter((sala) => sala.sala.toLowerCase().includes(e.target.value.toLowerCase()));
+                    setDados(resultados);
+                  }
+                }}
+              >
+                <MenuItem value="TODAS">
+                  TODAS
+                </MenuItem>
+                {lista_salas.map((sala) => (
+                  <MenuItem key={sala.sala} value={sala.sala}>
+                    {sala.sala}
+                  </MenuItem>
+                ))}
+              </Select>
+          </Stack>
       </div>
       <div>
         <TableContainer component={Paper}>
