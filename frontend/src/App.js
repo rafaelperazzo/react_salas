@@ -167,7 +167,7 @@ function App() {
       <div>
         <Divider />
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table sx={{ minWidth: 650, border: '1px solid #ccc' }} aria-label="simple table">
             <TableHead>
               <StyledTableRow>
                 <StyledTableCell>Turma</StyledTableCell>
@@ -215,7 +215,7 @@ function App() {
           <h2 style={{ backgroundColor: 'lightgray' }}>Ocupação da Sala: {salaSelecionada}</h2>
           <div>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="ocupacao sala">
+              <Table sx={{ minWidth: 650}} aria-label="ocupacao sala">
                 <TableHead>
                   <TableRow>
                     <TableCell>Segunda-feira</TableCell>
@@ -230,32 +230,32 @@ function App() {
                   <TableRow>
                     <TableCell>
                       {segunda.map((item, index) => (
-                        <p key={index}><Chip label={item} variant="outlined" /></p>
+                        <p key={index}>{item}</p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {terca.map((item, index) => (
-                        <p key={index}><Chip label={item} variant="outlined" /></p>
+                        <p key={index}>{item}</p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {quarta.map((item, index) => (
-                        <p key={index}><Chip label={item} variant="outlined" /></p>
+                        <p key={index}>{item}</p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {quinta.map((item, index) => (
-                        <p key={index}><Chip label={item} variant="outlined" /></p>
+                        <p key={index}>{item}</p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {sexta.map((item, index) => (
-                        <p key={index}><Chip label={item} variant="outlined" /></p>
+                        <p key={index}>{item}</p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {sabado.map((item, index) => (
-                        <p key={index}><Chip label={item} variant="outlined" /></p>
+                        <p key={index}>{item}</p>
                       ))}
                     </TableCell>
                   </TableRow>
