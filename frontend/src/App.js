@@ -11,22 +11,48 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-console.log(process.env.REACT_APP_SUPABASE_URL);
-console.log(process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY);
+import Select from '@mui/material/Select';
 
 const supabase = createClient(
   process.env.REACT_APP_SUPABASE_URL,
   process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY
 );
 
+function retornaHorarios(sala,dia) {
+  let retorno = [];
+  sala.forEach((room) => {
+    let reg = new RegExp(`${dia}, ([0-9]{2}:[0-9]{2} a [0-9]{2}:[0-9]{2})`, "i");
+    if (room.horario.includes(dia)) {
+      const n = room.horario.match(reg);
+      retorno.push(n[1] + " - " + room.disciplina);
+    }
+  });
+  return retorno.sort();
+}
+
+function ocupacaoSala(todas,sala) {
+  sala = todas.filter((room) => room.sala === sala);
+  const segunda = retornaHorarios(sala,"Segunda-feira");
+  const terca = retornaHorarios(sala,"Terça-feira");
+  const quarta = retornaHorarios(sala,"Quarta-feira");
+  const quinta = retornaHorarios(sala,"Quinta-feira");
+  const sexta = retornaHorarios(sala,"Sexta-feira");
+  const sabado = retornaHorarios(sala,"Sábado");
+  return [segunda, terca, quarta, quinta, sexta, sabado];
+}
+
 function App() {
   const [salas, setSalas] = useState([]);
   const [filtro, setFiltro] = useState("");
   const [dados,setDados] = useState([]);
   const [lista_salas,setLista_salas] = useState([]);
-  const [salaSelecionada, setSalaSelecionada] = useState("JVS::02");
+  const [salaSelecionada, setSalaSelecionada] = useState("TODAS");
+  const [segunda,setSegunda] = useState([]);
+  const [terca,setTerca] = useState([]);
+  const [quarta,setQuarta] = useState([]);
+  const [quinta,setQuinta] = useState([]);
+  const [sexta,setSexta] = useState([]);
+  const [sabado,setSabado] = useState([]);
   useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("salas_2025_2").select("*");
@@ -118,13 +144,83 @@ function App() {
                   <TableCell align="right">{sala.disciplina}</TableCell>
                   <TableCell align="right">{sala.departamento}</TableCell>
                   <TableCell align="right">{sala.horario}</TableCell>
-                  <TableCell align="right">{sala.sala}</TableCell>
+                  <TableCell align="right"
+                      onClick={
+                        () => {
+                          setSalaSelecionada(sala.sala);
+                          const resultados = salas.filter((room) => room.sala.toLowerCase().includes(sala.sala.toLowerCase()));
+                          setDados(resultados);
+                          const mapa = ocupacaoSala(salas, sala.sala);
+                          setSegunda(mapa[0]);
+                          setTerca(mapa[1]);
+                          setQuarta(mapa[2]);
+                          setQuinta(mapa[3]);
+                          setSexta(mapa[4]);
+                          setSabado(mapa[5]);
+                        }
+                      }
+                  >
+                    {sala.sala}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
     </div>
+      <div>
+          <h2>Ocupação da Sala: {salaSelecionada}</h2>
+          <div>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="ocupacao sala">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Segunda-feira</TableCell>
+                    <TableCell>Terça-feira</TableCell>
+                    <TableCell>Quarta-feira</TableCell>
+                    <TableCell>Quinta-feira</TableCell>
+                    <TableCell>Sexta-feira</TableCell>
+                    <TableCell>Sábado</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      {segunda.map((item, index) => (
+                        <p key={index}>{item}</p>
+                      ))}
+                    </TableCell>
+                    <TableCell>
+                      {terca.map((item, index) => (
+                        <p key={index}>{item}</p>
+                      ))}
+                    </TableCell>
+                    <TableCell>
+                      {quarta.map((item, index) => (
+                        <p key={index}>{item}</p>
+                      ))}
+                    </TableCell>
+                    <TableCell>
+                      {quinta.map((item, index) => (
+                        <p key={index}>{item}</p>
+                      ))}
+                    </TableCell>
+                    <TableCell>
+                      {sexta.map((item, index) => (
+                        <p key={index}>{item}</p>
+                      ))}
+                    </TableCell>
+                    <TableCell>
+                      {sabado.map((item, index) => (
+                        <p key={index}>{item}</p>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+      </div>
     </div>
   );
 }
