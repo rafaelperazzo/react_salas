@@ -3,7 +3,7 @@ import './App.css';
 import { createClient } from "@supabase/supabase-js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -12,6 +12,33 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Divider from '@mui/material/Divider';
+import { styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
+const Demo = styled('div')(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.background.paper,
+}));
 
 const supabase = createClient(
   process.env.REACT_APP_SUPABASE_URL,
@@ -106,9 +133,22 @@ function App() {
                   setSalaSelecionada(e.target.value);
                   if (e.target.value === "TODAS") {
                     setDados(salas);
+                    setSegunda([]);
+                    setTerca([]);
+                    setQuarta([]);
+                    setQuinta([]);
+                    setSexta([]);
+                    setSabado([]);
                   } else {
                     const resultados = salas.filter((sala) => sala.sala.toLowerCase().includes(e.target.value.toLowerCase()));
                     setDados(resultados);
+                    const mapa = ocupacaoSala(salas, e.target.value);
+                    setSegunda(mapa[0]);
+                    setTerca(mapa[1]);
+                    setQuarta(mapa[2]);
+                    setQuinta(mapa[3]);
+                    setSexta(mapa[4]);
+                    setSabado(mapa[5]);
                   }
                 }}
               >
@@ -121,30 +161,32 @@ function App() {
                   </MenuItem>
                 ))}
               </Select>
+              
           </Stack>
       </div>
       <div>
+        <Divider />
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
-              <TableRow>
-                <TableCell>Turma</TableCell>
-                <TableCell align="right">Disciplina</TableCell>
-                <TableCell align="right">Departamento</TableCell>
-                <TableCell align="right">Horário</TableCell>
-                <TableCell align="right">Sala</TableCell>
-              </TableRow>
+              <StyledTableRow>
+                <StyledTableCell>Turma</StyledTableCell>
+                <StyledTableCell align="right">Disciplina</StyledTableCell>
+                <StyledTableCell align="right">Departamento</StyledTableCell>
+                <StyledTableCell align="right">Horário</StyledTableCell>
+                <StyledTableCell align="right">Sala</StyledTableCell>
+              </StyledTableRow>
             </TableHead>
             <TableBody>
               {dados.map((sala) => (
-                <TableRow key={sala.id}>
-                  <TableCell component="th" scope="row">
+                <StyledTableRow key={sala.id}>
+                  <StyledTableCell component="th" scope="row">
                     {sala.turma}
-                  </TableCell>
-                  <TableCell align="right">{sala.disciplina}</TableCell>
-                  <TableCell align="right">{sala.departamento}</TableCell>
-                  <TableCell align="right">{sala.horario}</TableCell>
-                  <TableCell align="right"
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{sala.disciplina}</StyledTableCell>
+                  <StyledTableCell align="right">{sala.departamento}</StyledTableCell>
+                  <StyledTableCell align="right">{sala.horario}</StyledTableCell>
+                  <StyledTableCell align="right"
                       onClick={
                         () => {
                           setSalaSelecionada(sala.sala);
@@ -161,15 +203,16 @@ function App() {
                       }
                   >
                     {sala.sala}
-                  </TableCell>
-                </TableRow>
+                  </StyledTableCell>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
     </div>
+      <Divider />
       <div>
-          <h2>Ocupação da Sala: {salaSelecionada}</h2>
+          <h2 style={{ backgroundColor: 'lightgray' }}>Ocupação da Sala: {salaSelecionada}</h2>
           <div>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="ocupacao sala">
@@ -187,32 +230,32 @@ function App() {
                   <TableRow>
                     <TableCell>
                       {segunda.map((item, index) => (
-                        <p key={index}>{item}</p>
+                        <p key={index}><Chip label={item} variant="outlined" /></p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {terca.map((item, index) => (
-                        <p key={index}>{item}</p>
+                        <p key={index}><Chip label={item} variant="outlined" /></p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {quarta.map((item, index) => (
-                        <p key={index}>{item}</p>
+                        <p key={index}><Chip label={item} variant="outlined" /></p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {quinta.map((item, index) => (
-                        <p key={index}>{item}</p>
+                        <p key={index}><Chip label={item} variant="outlined" /></p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {sexta.map((item, index) => (
-                        <p key={index}>{item}</p>
+                        <p key={index}><Chip label={item} variant="outlined" /></p>
                       ))}
                     </TableCell>
                     <TableCell>
                       {sabado.map((item, index) => (
-                        <p key={index}>{item}</p>
+                        <p key={index}><Chip label={item} variant="outlined" /></p>
                       ))}
                     </TableCell>
                   </TableRow>
