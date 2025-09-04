@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
-import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,10 +34,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:last-child td, &:last-child th': {
     border: 0,
   },
-}));
-
-const Demo = styled('div')(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.background.paper,
 }));
 
 const supabase = createClient(
@@ -80,6 +76,7 @@ function App() {
   const [quinta,setQuinta] = useState([]);
   const [sexta,setSexta] = useState([]);
   const [sabado,setSabado] = useState([]);
+  const [carregando, setCarregando] = useState(true);
   useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("salas_2025_2").select("*");
@@ -87,6 +84,7 @@ function App() {
         console.error("Error fetching salas:", error);
       } else {
         setSalas(data);
+        
       }
     }
     fetchSalas();
@@ -106,6 +104,7 @@ function App() {
         console.error("Error fetching lista_salas:", error);
       } else {
         setLista_salas(data);
+        setCarregando(false);
       }
     }
     fetch_lista_salas();
@@ -113,6 +112,9 @@ function App() {
   return (
     <div className="App">
       <div>
+        <CircularProgress 
+          style={{ display: carregando ? 'block' : 'none', position: 'absolute', top: '50%', left: '50%' }}
+        />
         <h1>Alocação de Salas do DC - 2025.2</h1>
       </div>
       <div>
