@@ -79,7 +79,7 @@ function App() {
   const [carregando, setCarregando] = useState(true);
   useEffect(() => {
     const fetchSalas = async () => {
-      const { data, error } = await supabase.from("salas_2025_2").select("*");
+      const { data, error } = await supabase.from("alocacao_2025_2").select("*");
       if (error) {
         console.error("Error fetching salas:", error);
       } else {
@@ -186,7 +186,7 @@ function App() {
                     {sala.turma}
                   </StyledTableCell>
                   <StyledTableCell align="right">{sala.disciplina}</StyledTableCell>
-                  <StyledTableCell align="right">{sala.departamento}</StyledTableCell>
+                  <StyledTableCell align="right">-</StyledTableCell>
                   <StyledTableCell align="right">{sala.horario}</StyledTableCell>
                   <StyledTableCell align="right"
                       onClick={
