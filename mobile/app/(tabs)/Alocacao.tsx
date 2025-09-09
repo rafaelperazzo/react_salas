@@ -15,7 +15,7 @@ export default function Alocacao() {
                     />
                   }>
             <ThemedView style={styles.container}>
-                <ThemedText>Alocação de Salas</ThemedText>
+                <ThemedText type="title">Alocação de Salas</ThemedText>
             </ThemedView>
         </ParallaxScrollView>
     );
