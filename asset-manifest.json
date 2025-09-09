@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/react_salas/static/css/main.f855e6bc.css",
-    "main.js": "/react_salas/static/js/main.96a08546.js",
+    "main.js": "/react_salas/static/js/main.be6cadf1.js",
     "static/js/453.670e15c7.chunk.js": "/react_salas/static/js/453.670e15c7.chunk.js",
     "index.html": "/react_salas/index.html",
     "main.f855e6bc.css.map": "/react_salas/static/css/main.f855e6bc.css.map",
-    "main.96a08546.js.map": "/react_salas/static/js/main.96a08546.js.map",
+    "main.be6cadf1.js.map": "/react_salas/static/js/main.be6cadf1.js.map",
     "453.670e15c7.chunk.js.map": "/react_salas/static/js/453.670e15c7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.96a08546.js"
+    "static/js/main.be6cadf1.js"
   ]
 }
