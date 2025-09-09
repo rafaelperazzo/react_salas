@@ -186,7 +186,7 @@ function App() {
                     {sala.turma}
                   </StyledTableCell>
                   <StyledTableCell align="right">{sala.disciplina}</StyledTableCell>
-                  <StyledTableCell align="right">-</StyledTableCell>
+                  <StyledTableCell align="right">{sala.departamento}</StyledTableCell>
                   <StyledTableCell align="right">{sala.horario}</StyledTableCell>
                   <StyledTableCell align="right"
                       onClick={

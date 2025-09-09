@@ -1,3 +1,5 @@
+*.csv
+*.ods
 # Logs
 logs
 *.log
