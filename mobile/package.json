@@ -1,5 +1,5 @@
 {
-  "name": "DCapp",
+  "name": "dcapp",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -61,6 +61,13 @@
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"
+  },
+  "expo": {
+    "install": {
+      "exclude": [
+        "react-native-safe-area-context"
+      ]
+    }
   },
   "private": true
 }
