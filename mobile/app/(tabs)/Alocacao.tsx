@@ -24,16 +24,17 @@ import {
 } from '@/components/ui/select';
 
 const supabase = createClient(
-  process.env.EXPO_PUBLIC_SUPABASE_URL,
-  process.env.EXPO_PUBLIC_SUPABASE_KEY
+  process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
+  process.env.EXPO_PUBLIC_SUPABASE_KEY ?? ''
 );
 
 export default function Alocacao() {
-  const [salas, setSalas] = useState([]); 
+  const [salas, setSalas] = useState<any[]>([]); 
   const [carregando,setCarregando] = useState(true);
   const [filtro,setFiltro] = useState('');
-  const [dados,setDados] = useState([]);
-  const [lista_salas,setLista_salas] = useState([]);
+  const [dados,setDados] = useState<any[]>([]);
+  const [lista_salas,setLista_salas] = useState<any[]>([]);
+  const [filtro_sala,setFiltro_sala] = useState('TODAS');
   useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -56,8 +57,16 @@ export default function Alocacao() {
     aplicarFiltro()
   }, [salas,filtro])
   useEffect(() => {
+    const aplicarFiltroSala = async () => {
+      const busca = filtro_sala;
+      const resultados = salas.filter((sala) => sala.sala.toLowerCase().includes(busca.toLowerCase()));
+      setDados(resultados);
+    }
+    aplicarFiltroSala()
+  }, [salas,filtro_sala])
+  useEffect(() => {
     const fetch_lista_salas = async () => {
-      const { data, error } = await supabase.from("salas").select("*");
+      const { data, error } = await supabase.from("salas").select("*").order('sala', { ascending: true });
       if (error) {
         console.error("Error fetching lista_salas:", error);
       } else {
@@ -97,7 +106,16 @@ export default function Alocacao() {
                   </Input>
                 </VStack>
                   <VStack space={2} style={{width: '90%', marginTop: 10}}>
-                    <Select>
+                    <Select 
+                        onValueChange={
+                            (value) => { 
+                              if(value === 'TODAS'){
+                                setFiltro_sala('');
+                              } else {
+                                setFiltro_sala(value);
+                              }
+                            }
+                          } defaultValue="TODAS" >
                         <SelectTrigger variant="rounded" size="sm">
                             <SelectInput placeholder="Selecione a sala" />
                             <SelectIcon />
@@ -108,6 +126,7 @@ export default function Alocacao() {
                                 <SelectDragIndicatorWrapper>
                                     <SelectDragIndicator />
                                 </SelectDragIndicatorWrapper>
+                                <SelectItem value="TODAS" label="Todas as salas" />
                                 {lista_salas.map((sala:any) => (
                                     <SelectItem key={Math.random()} value={sala.sala} label={sala.sala} />
                                 ))}
