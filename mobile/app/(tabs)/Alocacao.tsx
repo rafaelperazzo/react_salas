@@ -52,6 +52,62 @@ function ocupacaoSala(todas: any[],sala: any[]) {
   return [segunda, terca, quarta, quinta, sexta, sabado];
 }
 
+function render_mapa_sala(segunda: string[],terca: string[],quarta: string[],quinta: string[],sexta: string[],sabado: string[]) {
+  return (
+    <ThemedView style={styles.container}>
+        <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
+            <VStack space={2}>
+                <Heading size="md">Segunda-feira</Heading>        
+                {segunda.map((item:string) => (
+                    <Text key={Math.random()}>{item}</Text>
+                ))}
+            </VStack>
+        </Card>
+        <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
+            <VStack space={2}>
+                <Heading size="md">Terça-feira</Heading>        
+                {terca.map((item:string) => (
+                    <Text key={Math.random()}>{item}</Text>
+                ))}
+            </VStack>
+        </Card>
+        <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
+            <VStack space={2}>
+                <Heading size="md">Quarta-feira</Heading>        
+                {quarta.map((item:string) => (
+                    <Text key={Math.random()}>{item}</Text>
+                ))}
+            </VStack>
+        </Card>
+        <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
+            <VStack space={2}>
+                <Heading size="md">Quinta-feira</Heading>        
+                {quinta.map((item:string) => (
+                    <Text key={Math.random()}>{item}</Text>
+                ))}
+            </VStack>
+        </Card>
+        <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
+            <VStack space={2}>
+                <Heading size="md">Sexta-feira</Heading>        
+                {sexta.map((item:string) => (
+                    <Text key={Math.random()}>{item}</Text>
+                ))}
+            </VStack>
+        </Card>
+        <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
+            <VStack space={2}>
+                <Heading size="md">Sábado</Heading>        
+                {sabado.map((item:string) => (
+                    <Text key={Math.random()}>{item}</Text>
+                ))}
+            </VStack>
+        </Card>
+    </ThemedView>
+                
+  )
+}
+
 export default function Alocacao() {
   const [salas, setSalas] = useState<any[]>([]); 
   const [carregando,setCarregando] = useState(true);
@@ -177,7 +233,10 @@ export default function Alocacao() {
                     
                 </ThemedView>
                 <ThemedView style={styles.container}>
-                        {dados.map((sala:any) => (
+                    {dados.map(
+                      (sala:any) => 
+                      {
+                        return(
                             <Card key={sala.id} style={{ marginBottom: 10, padding: 10, width: '90%' }}>
                                 <VStack space={2}>
                                     <Heading size="md">{sala.disciplina}</Heading>
@@ -187,58 +246,11 @@ export default function Alocacao() {
                                     <Text>Sala: {sala.sala}</Text>
                                 </VStack>
                             </Card>
-                        ))}
+                        );
+                      }
+                    )}
                 </ThemedView>
-                <ThemedView style={styles.container}>
-                  <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                      <VStack space={2}>
-                          <Heading size="md">Segunda-feira</Heading>        
-                          {segunda.map((item:string) => (
-                              <Text key={Math.random()}>{item}</Text>
-                          ))}
-                      </VStack>
-                  </Card>
-                  <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                      <VStack space={2}>
-                          <Heading size="md">Terça-feira</Heading>        
-                          {terca.map((item:string) => (
-                              <Text key={Math.random()}>{item}</Text>
-                          ))}
-                      </VStack>
-                  </Card>
-                  <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                      <VStack space={2}>
-                          <Heading size="md">Quarta-feira</Heading>        
-                          {quarta.map((item:string) => (
-                              <Text key={Math.random()}>{item}</Text>
-                          ))}
-                      </VStack>
-                  </Card>
-                  <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                      <VStack space={2}>
-                          <Heading size="md">Quinta-feira</Heading>        
-                          {quinta.map((item:string) => (
-                              <Text key={Math.random()}>{item}</Text>
-                          ))}
-                      </VStack>
-                  </Card>
-                  <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                      <VStack space={2}>
-                          <Heading size="md">Sexta-feira</Heading>        
-                          {sexta.map((item:string) => (
-                              <Text key={Math.random()}>{item}</Text>
-                          ))}
-                      </VStack>
-                  </Card>
-                  <Card style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                      <VStack space={2}>
-                          <Heading size="md">Sábado</Heading>        
-                          {sabado.map((item:string) => (
-                              <Text key={Math.random()}>{item}</Text>
-                          ))}
-                      </VStack>
-                  </Card>
-                </ThemedView>
+                {render_mapa_sala(segunda as string[],terca as string[],quarta as string[],quinta as string[],sexta as string[],sabado as string[])}
             </ParallaxScrollView>
           </SafeAreaView>
         </SafeAreaProvider>
