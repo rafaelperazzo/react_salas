@@ -121,6 +121,7 @@ export default function Alocacao() {
   const [quinta,setQuinta] = useState([]);
   const [sexta,setSexta] = useState([]);
   const [sabado,setSabado] = useState([]);
+  
   useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -195,7 +196,7 @@ export default function Alocacao() {
                       </Input>
                     </VStack>
                     <VStack space={2} style={{width: '90%', marginTop: 10}}>
-                      <Select 
+                      <Select
                           onValueChange={
                               (value) => { 
                                 if(value === 'TODAS'){
@@ -230,7 +231,7 @@ export default function Alocacao() {
                           </SelectPortal>
                       </Select>
                     </VStack>
-                    
+                
                 </ThemedView>
                 <ThemedView style={styles.container}>
                     {dados.map(
