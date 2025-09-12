@@ -12,20 +12,17 @@ import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
 import { Input, InputField } from '@/components/ui/input';
 import {
-  Select,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectPortal,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-  SelectItem,
-} from '@/components/ui/select';
-
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@/components/ui/modal';
 import { Button, ButtonText } from '@/components/ui/button';
 import {Picker} from '@react-native-picker/picker';
+import { Divider } from '@/components/ui/divider';
+import { Div } from '@expo/html-elements';
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
@@ -124,7 +121,70 @@ export default function Alocacao() {
   const [quinta,setQuinta] = useState([]);
   const [sexta,setSexta] = useState([]);
   const [sabado,setSabado] = useState([]);
-  
+  const [showModal, setShowModal] = useState(false);
+  const [modalSala, setModalSala] = useState('');
+  const [modalHorario, setModalHorario] = useState('');
+  const [modalDisciplina, setModalDisciplina] = useState('');
+  function detalhes_sala() {  
+    return (
+      <Modal
+          isOpen={showModal}
+          size="md"
+        >
+          <ModalBackdrop />
+          <ModalContent>
+            <ModalHeader>
+              <Heading size="lg">{modalSala}</Heading>
+              
+            </ModalHeader>
+            <ModalBody>
+              <Text>{modalDisciplina}</Text>
+              <Text>{modalHorario}</Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                onPress={() => setShowModal(false)}
+              >
+                <ButtonText>Fechar</ButtonText>
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+      </Modal>
+    )
+  }
+  function render_salas() {
+    return (
+      <ThemedView style={styles.container}>
+          {detalhes_sala()}
+          {dados.map(
+             (sala:any) => 
+            {
+               return(
+                  <Card key={sala.id} style={{ marginBottom: 10, padding: 10, width: '90%' }}
+                  >
+                      <VStack space={2}>
+                          <Heading size="md"
+                            onPress={
+                              () => {
+                                setShowModal(true);
+                                setModalSala(sala.sala);
+                                setModalHorario(sala.horario);
+                                setModalDisciplina(sala.disciplina);
+                              }
+                          }
+                          >{sala.disciplina}</Heading>
+                          <Heading size="sm" className="mb-1">
+                            {sala.horario}
+                          </Heading>
+                          <Text>Sala: {sala.sala}</Text>
+                      </VStack>
+                  </Card>
+              );
+            }
+          )}
+      </ThemedView>
+    )
+  }
   useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -198,7 +258,6 @@ export default function Alocacao() {
                       </Input>
                     </VStack>
                     <VStack space={"sm"} style={{width: '90%', marginTop: 10}}>
-                      
                       <Picker
                         onValueChange={
                               (value) => { 
@@ -222,27 +281,15 @@ export default function Alocacao() {
                             <Picker.Item key={Math.random()} label={sala.sala} value={sala.sala} />
                         ))}
                       </Picker>
+                      
                     </VStack>
                 </ThemedView>
-                <ThemedView style={styles.container}>
-                    {dados.map(
-                      (sala:any) => 
-                      {
-                        return(
-                            <Card key={sala.id} style={{ marginBottom: 10, padding: 10, width: '90%' }}>
-                                <VStack space={2}>
-                                    <Heading size="md">{sala.disciplina}</Heading>
-                                    <Heading size="sm" className="mb-1">
-                                      {sala.horario}
-                                    </Heading>
-                                    <Text>Sala: {sala.sala}</Text>
-                                </VStack>
-                            </Card>
-                        );
-                      }
-                    )}
-                </ThemedView>
+                
+                {render_salas()}
+                <Divider className="mt-4 mb-6" />
+                <ThemedText type="title">Mapa semanal</ThemedText>
                 {render_mapa_sala(segunda as string[],terca as string[],quarta as string[],quinta as string[],sexta as string[],sabado as string[])}
+                
             </ParallaxScrollView>
           </SafeAreaView>
         </SafeAreaProvider>

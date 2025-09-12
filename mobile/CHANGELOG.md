@@ -1,3 +1,4 @@
+	2025-09-12 13:39:41 -0300	feat: Adicionados yml de submissão automática para a play store
 	2025-09-12 10:48:46 -0300	fix: Corrigido Select das salas
 	2025-09-12 09:16:00 -0300	fix: Removido showModal
 	2025-09-12 08:44:32 -0300	fix: Ajustado arquivo eas.json para o submit
