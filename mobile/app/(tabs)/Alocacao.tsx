@@ -24,6 +24,9 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 
+import { Button, ButtonText } from '@/components/ui/button';
+import {Picker} from '@react-native-picker/picker';
+
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
   process.env.EXPO_PUBLIC_SUPABASE_KEY ?? ''
@@ -168,7 +171,6 @@ export default function Alocacao() {
         <SafeAreaProvider>
           <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
             <ParallaxScrollView
-                headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
                 headerImage={
                         <Image
                           source={require('@/assets/images/dc_logo2.png')}
@@ -195,9 +197,10 @@ export default function Alocacao() {
                           />
                       </Input>
                     </VStack>
-                    <VStack space={2} style={{width: '90%', marginTop: 10}}>
-                      <Select
-                          onValueChange={
+                    <VStack space={"sm"} style={{width: '90%', marginTop: 10}}>
+                      
+                      <Picker
+                        onValueChange={
                               (value) => { 
                                 if(value === 'TODAS'){
                                   setFiltro_sala('');
@@ -212,26 +215,14 @@ export default function Alocacao() {
                                   setSabado(mapa[5]);
                                 }
                               }
-                            } defaultValue="TODAS" >
-                          <SelectTrigger variant="rounded" size="sm">
-                              <SelectInput placeholder="Selecione a sala" />
-                              <SelectIcon />
-                          </SelectTrigger>
-                          <SelectPortal>
-                              <SelectBackdrop />
-                              <SelectContent>
-                                  <SelectDragIndicatorWrapper>
-                                      <SelectDragIndicator />
-                                  </SelectDragIndicatorWrapper>
-                                  <SelectItem value="TODAS" label="Todas as salas" />
-                                  {lista_salas.map((sala:any) => (
-                                      <SelectItem key={Math.random()} value={sala.sala} label={sala.sala} />
-                                  ))}
-                              </SelectContent>
-                          </SelectPortal>
-                      </Select>
+                            }
+                      >
+                        <Picker.Item label="Todas as salas" value="TODAS" />
+                        {lista_salas.map((sala:any) => (
+                            <Picker.Item key={Math.random()} label={sala.sala} value={sala.sala} />
+                        ))}
+                      </Picker>
                     </VStack>
-                
                 </ThemedView>
                 <ThemedView style={styles.container}>
                     {dados.map(
