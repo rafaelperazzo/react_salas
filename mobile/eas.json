@@ -16,6 +16,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./brseclabapp-e9bccb91d544.json",
+        "releaseStatus": "completed",
+        "track": "production"
+      }
+    }
   }
 }
