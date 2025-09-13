@@ -124,6 +124,7 @@ export default function Alocacao() {
                         />
                     </ThemedView>
                     <ThemedView style={styles.container}>
+                        
                         {render_salas()}
                     </ThemedView>
                 </ScrollView>
