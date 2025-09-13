@@ -1,3 +1,4 @@
+	2025-09-13 14:59:30 -0300	feat: Iniciada migração para expo 54 - Falta colocar o filtro por sala e inserir a programação semanal.
 	2025-09-12 14:40:05 -0300	feat: Adicionado modal de detalhes
 	2025-09-12 13:39:41 -0300	feat: Adicionados yml de submissão automática para a play store
 	2025-09-12 10:48:46 -0300	fix: Corrigido Select das salas

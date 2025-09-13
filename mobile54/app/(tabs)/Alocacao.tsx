@@ -2,12 +2,10 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, Button, List, MD2Colors, TextInput } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, TextInput, PaperProvider } from 'react-native-paper';
 import { createClient } from "@supabase/supabase-js";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import Entrada from "@/components/ui/Entrada";
-import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { Image } from 'expo-image';
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
@@ -55,6 +53,8 @@ export default function Alocacao() {
     const [modalHorario, setModalHorario] = useState('');
     const [modalDisciplina, setModalDisciplina] = useState('');
     const [expanded, setExpanded] = useState(true);
+    const openMenu = () => setShowModal(true);
+    const closeMenu = () => setShowModal(false);
     useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -108,16 +108,10 @@ export default function Alocacao() {
         ));
     }
     return (
+        <PaperProvider>
         <SafeAreaProvider>
             <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
-                <ParallaxScrollView
-                    headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-                    headerImage={
-                    <Image
-                        source={require('@/assets/images/dc_logo2.png')}
-                        style={styles.reactLogo}
-                    />
-                    }>
+                <ScrollView>
                     <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
                         <ThemedText type="title">Alocação de Salas</ThemedText>
                         <ActivityIndicator animating={carregando} color={MD2Colors.blue500} />
@@ -128,14 +122,14 @@ export default function Alocacao() {
                             onChangeText={text => setFiltro(text)}
                             style={{ width: '90%', marginTop: 10, marginBottom: 10 }}
                         />
-                        
                     </ThemedView>
                     <ThemedView style={styles.container}>
                         {render_salas()}
                     </ThemedView>
-                </ParallaxScrollView>
+                </ScrollView>
             </SafeAreaView>
         </SafeAreaProvider>
+        </PaperProvider>
     );
 }
 
