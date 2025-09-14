@@ -34,6 +34,9 @@ export default function HomeScreen() {
                 Alocação de Salas
               </Button>
           </ThemedView>
+          <ThemedView style={styles.rodape}>
+            
+          </ThemedView>
         </ParallaxScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -42,11 +45,15 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
   },
   stepContainer: {
+    flex: 1,
+    flexDirection: 'column',
     gap: 8,
     marginBottom: 8,
   },
@@ -56,5 +63,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  rodape: {
+    flex: 5,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignContent: 'flex-end',
+    alignItems: 'flex-end',
+    padding: 16,
   },
 });

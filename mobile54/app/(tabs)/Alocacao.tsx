@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card, Text } from 'react-native-paper';
 import { createClient } from "@supabase/supabase-js";
 import { ScrollView, StyleSheet, Modal, View } from "react-native";
 import Entrada from "@/components/ui/Entrada";
@@ -224,6 +224,7 @@ export default function Alocacao() {
                                   <Picker.Item key={Math.random()} label={sala.sala} value={sala.sala} />
                               ))}
                             </Picker>
+                            
                       </View>
                       <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
                         <Button
@@ -233,6 +234,7 @@ export default function Alocacao() {
                         >
                           Mapa semanal
                         </Button>
+                        
                       </ThemedView>
                       <View>
                         <Modal
@@ -240,12 +242,15 @@ export default function Alocacao() {
                           animationType="slide"
                           onRequestClose={() => setShowModal(false)}
                         >
+                          <View>
+                            <Ionicons 
+                              name="close" size={32} color="black" style={{alignSelf: 'flex-end'}}
+                              onPress={() => setShowModal(false)}
+                            />
+                          </View>
                           <View style={{height: '100%'}}>
                             <ScrollView>
-                              <Ionicons 
-                                name="close" size={32} color="black" style={{alignSelf: 'flex-end'}}
-                                onPress={() => setShowModal(false)}
-                              />
+                              
                               {render_mapa_sala()}
                               <Button onPress={() => setShowModal(false)}>Fechar</Button>
                             </ScrollView>
@@ -274,6 +279,7 @@ const styles = StyleSheet.create({
     picker: {
         flex: 1,
         width: '90%',
+        flexDirection: 'column',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
