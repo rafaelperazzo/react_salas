@@ -2,11 +2,12 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Text, Divider, Card } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card } from 'react-native-paper';
 import { createClient } from "@supabase/supabase-js";
 import { ScrollView, StyleSheet, Modal, View } from "react-native";
 import Entrada from "@/components/ui/Entrada";
 import {Picker} from '@react-native-picker/picker';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
@@ -53,8 +54,6 @@ export default function Alocacao() {
     const [modalSala, setModalSala] = useState('');
     const [modalHorario, setModalHorario] = useState('');
     const [modalDisciplina, setModalDisciplina] = useState('');
-    const [expanded, setExpanded] = useState(true);
-    const [modalVisible, setModalVisible] = useState(false);
     useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -188,7 +187,7 @@ export default function Alocacao() {
     return (
         <PaperProvider>
           <SafeAreaProvider>
-              <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
+              <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }} edges={['right', 'top', 'left']}>
                   <ScrollView>
                       <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
                           <ThemedText type="title">Alocação de Salas</ThemedText>
@@ -241,21 +240,23 @@ export default function Alocacao() {
                           animationType="slide"
                           onRequestClose={() => setShowModal(false)}
                         >
-                          <ScrollView>
-                            <Button onPress={() => setShowModal(false)}>Fechar</Button>
-                            {render_mapa_sala()}
-                            <Button onPress={() => setShowModal(false)}>Fechar</Button>
-                          </ScrollView>
+                          <View style={{height: '100%'}}>
+                            <ScrollView>
+                              <Ionicons 
+                                name="close" size={32} color="black" style={{alignSelf: 'flex-end'}}
+                                onPress={() => setShowModal(false)}
+                              />
+                              {render_mapa_sala()}
+                              <Button onPress={() => setShowModal(false)}>Fechar</Button>
+                            </ScrollView>
+                          </View>
                         </Modal>
                       </View> 
                       <ThemedView style={styles.container}>
                           {render_salas()}
                           <Divider />
                       </ThemedView>
-                      <ThemedView style={styles.container}>
-                        <ThemedText type="title">Mapa semanal</ThemedText>
-                        {render_mapa_sala()}
-                      </ThemedView>
+                      
                   </ScrollView>
               </SafeAreaView>
           </SafeAreaProvider>
