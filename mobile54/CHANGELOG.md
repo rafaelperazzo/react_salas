@@ -1,3 +1,4 @@
+	2025-09-13 17:49:35 -0300	fix: Ajustes no modal
 	2025-09-13 16:30:11 -0300	fix: Ajustes na tela de alocação
 	2025-09-13 14:59:30 -0300	feat: Iniciada migração para expo 54 - Falta colocar o filtro por sala e inserir a programação semanal.
 	2025-09-12 14:40:05 -0300	feat: Adicionado modal de detalhes
