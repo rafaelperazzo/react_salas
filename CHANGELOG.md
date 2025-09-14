@@ -1,3 +1,4 @@
+	2025-09-14 16:39:58 -0300	fix: Icones
 	2025-09-14 10:53:46 -0300	fix: Configuração no app.json - githubURL
 	2025-09-14 10:49:46 -0300	fix: Ajustes no modal
 	2025-09-14 10:31:03 -0300	fix: Picker agora está sendo mostrado, alteração no style da view
