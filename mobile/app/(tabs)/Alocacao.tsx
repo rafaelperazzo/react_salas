@@ -22,7 +22,6 @@ import {
 import { Button, ButtonText } from '@/components/ui/button';
 import {Picker} from '@react-native-picker/picker';
 import { Divider } from '@/components/ui/divider';
-import { Div } from '@expo/html-elements';
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
@@ -125,6 +124,7 @@ export default function Alocacao() {
   const [modalSala, setModalSala] = useState('');
   const [modalHorario, setModalHorario] = useState('');
   const [modalDisciplina, setModalDisciplina] = useState('');
+  
   function detalhes_sala() {  
     return (
       <Modal
@@ -226,7 +226,8 @@ export default function Alocacao() {
       }
     }
     fetch_lista_salas();
-  }, []) 
+  }, [])
+ 
   return (
         <SafeAreaProvider>
           <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>

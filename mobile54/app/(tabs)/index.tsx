@@ -6,6 +6,7 @@ import { ThemedView } from '@/components/themed-view';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 export default function HomeScreen() {
   const router = useRouter();

@@ -2,10 +2,11 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, MD2Colors, TextInput, PaperProvider } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Text, Divider, Card } from 'react-native-paper';
 import { createClient } from "@supabase/supabase-js";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Modal, View } from "react-native";
 import Entrada from "@/components/ui/Entrada";
+import {Picker} from '@react-native-picker/picker';
 
 const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
@@ -53,8 +54,7 @@ export default function Alocacao() {
     const [modalHorario, setModalHorario] = useState('');
     const [modalDisciplina, setModalDisciplina] = useState('');
     const [expanded, setExpanded] = useState(true);
-    const openMenu = () => setShowModal(true);
-    const closeMenu = () => setShowModal(false);
+    const [modalVisible, setModalVisible] = useState(false);
     useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -107,29 +107,158 @@ export default function Alocacao() {
             />
         ));
     }
+    function render_mapa_sala() {
+      return (
+        <ThemedView style={styles.container}>
+          <Card 
+              style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
+              mode='elevated'
+              elevation={0}
+          >
+            <Card.Content>
+                <ThemedText type="subtitle">Segunda-feira</ThemedText>
+                {segunda.map((item, index) => (
+                    <ThemedText key={index}>{item}</ThemedText>
+                ))}
+            </Card.Content>
+          </Card>
+          <Card 
+              style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
+              mode='elevated'
+              elevation={0}
+          >
+            <Card.Content>
+                <ThemedText type="subtitle">Terça-feira</ThemedText>
+                {terca.map((item, index) => (
+                    <ThemedText key={index}>{item}</ThemedText>
+                ))}
+            </Card.Content>
+          </Card>
+          <Card 
+              style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
+              mode='elevated'
+              elevation={0}
+          >
+            <Card.Content>
+                <ThemedText type="subtitle">Quarta-feira</ThemedText>
+                {quarta.map((item, index) => (
+                    <ThemedText key={index}>{item}</ThemedText>
+                ))}
+            </Card.Content>
+          </Card>
+          <Card 
+              style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
+              mode='elevated'
+              elevation={0}
+          >
+            <Card.Content>
+                <ThemedText type="subtitle">Quinta-feira</ThemedText>
+                {quinta.map((item, index) => (
+                    <ThemedText key={index}>{item}</ThemedText>
+                ))}
+            </Card.Content>
+          </Card>
+          <Card 
+              style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
+              mode='elevated'
+              elevation={0}
+          >
+            <Card.Content>
+                <ThemedText type="subtitle">Sexta-feira</ThemedText>
+                {sexta.map((item, index) => (
+                    <ThemedText key={index}>{item}</ThemedText>
+                ))}
+            </Card.Content>
+          </Card>
+          <Card 
+              style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
+              mode='elevated'
+              elevation={0}
+          >
+            <Card.Content>
+                <ThemedText type="subtitle">Sábado</ThemedText>
+                {sabado.map((item, index) => (
+                    <ThemedText key={index}>{item}</ThemedText>
+                ))}
+            </Card.Content>
+          </Card>
+        </ThemedView>
+      )  
+    }
     return (
         <PaperProvider>
-        <SafeAreaProvider>
-            <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
-                <ScrollView>
-                    <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <ThemedText type="title">Alocação de Salas</ThemedText>
-                        <ActivityIndicator animating={carregando} color={MD2Colors.blue500} />
-                        <TextInput
-                            label="Filtrar por disciplina"
-                            mode="outlined"
-                            value={filtro}
-                            onChangeText={text => setFiltro(text)}
-                            style={{ width: '90%', marginTop: 10, marginBottom: 10 }}
-                        />
-                    </ThemedView>
-                    <ThemedView style={styles.container}>
-                        
-                        {render_salas()}
-                    </ThemedView>
-                </ScrollView>
-            </SafeAreaView>
-        </SafeAreaProvider>
+          <SafeAreaProvider>
+              <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
+                  <ScrollView>
+                      <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                          <ThemedText type="title">Alocação de Salas</ThemedText>
+                          <ActivityIndicator animating={carregando} color={MD2Colors.blue500} />
+                          <TextInput
+                              label="Filtrar por disciplina"
+                              mode="outlined"
+                              value={filtro}
+                              onChangeText={text => setFiltro(text)}
+                              style={{ width: '90%', marginTop: 10, marginBottom: 10 }}
+                          />  
+                      </ThemedView>
+                      <View style={styles.picker}>
+                            <Picker
+                              onValueChange={
+                                    (value) => { 
+                                      if(value === 'TODAS'){
+                                        setFiltro_sala('');
+                                      } else {
+                                        setFiltro_sala(value);
+                                        const mapa = ocupacaoSala(salas, value);
+                                        setSegunda(mapa[0]);
+                                        setTerca(mapa[1]);
+                                        setQuarta(mapa[2]);
+                                        setQuinta(mapa[3]);
+                                        setSexta(mapa[4]);
+                                        setSabado(mapa[5]);
+                                      }
+                                    }
+                                  }
+                            >
+                              <Picker.Item label="Todas as salas" value="TODAS" />
+                              {lista_salas.map((sala:any) => (
+                                  <Picker.Item key={Math.random()} label={sala.sala} value={sala.sala} />
+                              ))}
+                            </Picker>
+                      </View>
+                      <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                        <Button
+                            mode="contained"
+                            buttonColor='#000000'
+                            onPress={() => setShowModal(true)}
+                        >
+                          Mapa semanal
+                        </Button>
+                      </ThemedView>
+                      <View>
+                        <Modal
+                          visible={showModal}
+                          animationType="slide"
+                          onRequestClose={() => setShowModal(false)}
+                        >
+                          <ScrollView>
+                            <Button onPress={() => setShowModal(false)}>Fechar</Button>
+                            {render_mapa_sala()}
+                            <Button onPress={() => setShowModal(false)}>Fechar</Button>
+                          </ScrollView>
+                        </Modal>
+                      </View> 
+                      <ThemedView style={styles.container}>
+                          {render_salas()}
+                          <Divider />
+                      </ThemedView>
+                      <ThemedView style={styles.container}>
+                        <ThemedText type="title">Mapa semanal</ThemedText>
+                        {render_mapa_sala()}
+                      </ThemedView>
+                  </ScrollView>
+              </SafeAreaView>
+          </SafeAreaProvider>
         </PaperProvider>
     );
 }
@@ -140,6 +269,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    picker: {
+        flex: 1,
+        width: '90%',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 10,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        backgroundColor: '#fff',
     },
     reactLogo: {
     height: '100%',
