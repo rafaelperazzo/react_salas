@@ -3,6 +3,7 @@
     "name": "DcApp",
     "slug": "appdc",
     "version": "3.0.0",
+    "githubUrl": "https://github.com/rafaelperazzo/react_salas",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "appdc",
