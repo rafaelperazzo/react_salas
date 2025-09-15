@@ -2,7 +2,7 @@
   "expo": {
     "name": "DcApp",
     "slug": "appdc",
-    "version": "3.0.0",
+    "version": "5.0.0",
     "githubUrl": "https://github.com/rafaelperazzo/react_salas",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
@@ -10,7 +10,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rafaelperazzo.appdc"
     },
     "android": {
       "adaptiveIcon": {

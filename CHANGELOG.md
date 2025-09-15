@@ -1,3 +1,4 @@
+	2025-09-15 10:35:29 -0300	fix: eas.json corrigido
 	2025-09-14 16:47:19 -0300	fix: app.json pronto para build
 	2025-09-14 16:39:58 -0300	fix: Icones
 	2025-09-14 10:53:46 -0300	fix: Configuração no app.json - githubURL

@@ -236,27 +236,25 @@ export default function Alocacao() {
                         </Button>
                         
                       </ThemedView>
-                      <View>
+                      <SafeAreaView>
                         <Modal
                           visible={showModal}
                           animationType="slide"
                           onRequestClose={() => setShowModal(false)}
                         >
-                          <View>
+                          <SafeAreaView>
                             <Ionicons 
                               name="close" size={32} color="black" style={{alignSelf: 'flex-end'}}
                               onPress={() => setShowModal(false)}
                             />
-                          </View>
+                          </SafeAreaView>
                           <View style={{height: '100%'}}>
                             <ScrollView>
-                              
                               {render_mapa_sala()}
-                              <Button onPress={() => setShowModal(false)}>Fechar</Button>
                             </ScrollView>
                           </View>
                         </Modal>
-                      </View> 
+                      </SafeAreaView> 
                       <ThemedView style={styles.container}>
                           {render_salas()}
                           <Divider />
