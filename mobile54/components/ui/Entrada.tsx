@@ -14,9 +14,9 @@ export default function Entrada(props: EntradaProps) {
             elevation={0}
         >
             <Card.Content>
-                <Text>{props.disciplina}</Text>
+                <Text style={{ fontWeight: 'bold' }}>{props.disciplina}</Text>
                 <Text>Horário: {props.horario}</Text>
-                <Text>Sala: {props.sala}</Text>
+                <Text style={{ fontWeight: 'bold' }}>Sala: {props.sala}</Text>
             </Card.Content>
         </Card>
     );

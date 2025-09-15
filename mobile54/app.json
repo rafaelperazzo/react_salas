@@ -22,7 +22,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.rafaelperazzo.appdc"
+      "package": "com.rafaelperazzo.appdc",
+      "userInterfaceStyle": "light"
     },
     "web": {
       "output": "static",
