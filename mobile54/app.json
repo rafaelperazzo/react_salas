@@ -7,7 +7,7 @@
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "appdc",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,

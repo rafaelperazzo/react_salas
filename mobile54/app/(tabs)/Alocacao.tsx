@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card, Text } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card, DefaultTheme } from 'react-native-paper';
 import { createClient } from "@supabase/supabase-js";
 import { ScrollView, StyleSheet, Modal, View } from "react-native";
 import Entrada from "@/components/ui/Entrada";
@@ -38,6 +38,10 @@ function ocupacaoSala(todas: any[],sala: any[]) {
 }
 
 export default function Alocacao() {
+    const lightTheme = {
+      ...DefaultTheme,
+      dark: false,
+    };
     const [salas, setSalas] = useState<any[]>([]); 
     const [carregando,setCarregando] = useState(true);
     const [filtro,setFiltro] = useState('');
@@ -51,9 +55,6 @@ export default function Alocacao() {
     const [sexta,setSexta] = useState([]);
     const [sabado,setSabado] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [modalSala, setModalSala] = useState('');
-    const [modalHorario, setModalHorario] = useState('');
-    const [modalDisciplina, setModalDisciplina] = useState('');
     useEffect(() => {
     const fetchSalas = async () => {
       const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -108,7 +109,7 @@ export default function Alocacao() {
     }
     function render_mapa_sala() {
       return (
-        <ThemedView style={styles.container}>
+        <SafeAreaView>
           <Card 
               style={{ marginBottom: 1, padding: 1, width: '90%', backgroundColor: '#ffffffff' }}
               mode='elevated'
@@ -181,11 +182,11 @@ export default function Alocacao() {
                 ))}
             </Card.Content>
           </Card>
-        </ThemedView>
+        </SafeAreaView>
       )  
     }
     return (
-        <PaperProvider>
+        <PaperProvider theme={lightTheme}>
           <SafeAreaProvider>
               <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }} edges={['right', 'top', 'left']}>
                   <ScrollView>
@@ -248,11 +249,11 @@ export default function Alocacao() {
                               onPress={() => setShowModal(false)}
                             />
                           </SafeAreaView>
-                          <View style={{height: '100%'}}>
+                          <SafeAreaView>
                             <ScrollView>
                               {render_mapa_sala()}
                             </ScrollView>
-                          </View>
+                          </SafeAreaView>
                         </Modal>
                       </SafeAreaView> 
                       <ThemedView style={styles.container}>
