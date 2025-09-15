@@ -1,3 +1,4 @@
+	2025-09-15 13:35:09 -0300	feat: Adicionado workflow submit-android
 	2025-09-15 11:02:32 -0300	fix: SafeArea View da modal
 	2025-09-15 10:35:29 -0300	fix: eas.json corrigido
 	2025-09-14 16:47:19 -0300	fix: app.json pronto para build
