@@ -1,3 +1,4 @@
+	2025-09-14 16:47:19 -0300	fix: app.json pronto para build
 	2025-09-14 16:39:58 -0300	fix: Icones
 	2025-09-14 10:53:46 -0300	fix: Configuração no app.json - githubURL
 	2025-09-14 10:49:46 -0300	fix: Ajustes no modal
