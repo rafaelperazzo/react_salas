@@ -1,3 +1,4 @@
+	2025-09-15 14:58:06 -0300	fix: tentando resolver o problema do tema escuro
 	2025-09-15 13:45:36 -0300	docs: Readme.md atualizado
 	2025-09-15 13:35:09 -0300	feat: Adicionado workflow submit-android
 	2025-09-15 11:02:32 -0300	fix: SafeArea View da modal
