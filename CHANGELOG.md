@@ -1,3 +1,4 @@
+	2025-09-15 16:02:48 -0300	fix: Resolvido o problema do tema escuro
 	2025-09-15 15:51:46 -0300	fix: incluído switch dark/light
 	2025-09-15 15:36:13 -0300	fix: Mudanças nos cards
 	2025-09-15 15:09:09 -0300	fix: expo-system-ui
