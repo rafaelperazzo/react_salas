@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card, DefaultTheme } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card } from 'react-native-paper';
 import { createClient } from "@supabase/supabase-js";
 import { ScrollView, StyleSheet, Modal, View } from "react-native";
 import Entrada from "@/components/ui/Entrada";
@@ -38,10 +38,6 @@ function ocupacaoSala(todas: any[],sala: any[]) {
 }
 
 export default function Alocacao() {
-    const lightTheme = {
-      ...DefaultTheme,
-      dark: false,
-    };
     const [salas, setSalas] = useState<any[]>([]); 
     const [carregando,setCarregando] = useState(true);
     const [filtro,setFiltro] = useState('');
@@ -186,7 +182,7 @@ export default function Alocacao() {
       )  
     }
     return (
-        <PaperProvider theme={lightTheme}>
+        <PaperProvider>
           <SafeAreaProvider>
               <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }} edges={['right', 'top', 'left']}>
                   <ScrollView>

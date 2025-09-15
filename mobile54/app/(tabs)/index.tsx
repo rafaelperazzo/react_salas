@@ -1,15 +1,18 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Appearance, Switch, useColorScheme } from 'react-native';
+import { StyleSheet, Appearance, useColorScheme } from 'react-native';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    Appearance.setColorScheme('light');
+  }, []);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
@@ -34,10 +37,6 @@ export default function HomeScreen() {
               >
                 Alocação de Salas
               </Button>
-              <Switch value={colorScheme==='dark'}
-                onChange={() => {
-                  Appearance.setColorScheme(colorScheme==='dark' ? 'light' : 'dark')
-                }}/>
           </ThemedView>
           <ThemedView style={styles.rodape}>
             
