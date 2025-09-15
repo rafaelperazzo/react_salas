@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Appearance, Switch, useColorScheme } from 'react-native';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -9,6 +9,7 @@ import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const colorScheme = useColorScheme();
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
@@ -33,6 +34,10 @@ export default function HomeScreen() {
               >
                 Alocação de Salas
               </Button>
+              <Switch value={colorScheme==='dark'}
+                onChange={() => {
+                  Appearance.setColorScheme(colorScheme==='dark' ? 'light' : 'dark')
+                }}/>
           </ThemedView>
           <ThemedView style={styles.rodape}>
             

@@ -1,3 +1,4 @@
+	2025-09-15 15:36:13 -0300	fix: Mudanças nos cards
 	2025-09-15 15:09:09 -0300	fix: expo-system-ui
 	2025-09-15 14:58:06 -0300	fix: tentando resolver o problema do tema escuro
 	2025-09-15 13:45:36 -0300	docs: Readme.md atualizado
