@@ -3,16 +3,11 @@ import { ThemedView } from "@/components/themed-view";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card } from 'react-native-paper';
-import { createClient } from "@supabase/supabase-js";
 import { ScrollView, StyleSheet, Modal, View } from "react-native";
 import Entrada from "@/components/ui/Entrada";
 import {Picker} from '@react-native-picker/picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-const supabase = createClient(
-  process.env.EXPO_PUBLIC_SUPABASE_URL ?? '',
-  process.env.EXPO_PUBLIC_SUPABASE_KEY ?? ''
-);
+import supabase from '../../database/database';
 
 function retornaHorarios(sala: any[],dia: string) {
   let retorno: string[] = [];
@@ -97,6 +92,7 @@ export default function Alocacao() {
         return dados.map((sala) => (
             <Entrada
                 key={sala.id}
+                identificador={sala.id}
                 disciplina={sala.disciplina}
                 sala={sala.sala}
                 horario={sala.horario}
