@@ -1,3 +1,4 @@
+	2025-09-22 15:29:29 -0300	Inicio de implementação da tela que modifica uma sala
 	2025-09-15 16:03:43 -0300	fix: versão
 	2025-09-15 16:02:48 -0300	fix: Resolvido o problema do tema escuro
 	2025-09-15 15:51:46 -0300	fix: incluído switch dark/light
