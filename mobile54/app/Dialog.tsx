@@ -9,7 +9,9 @@ import { useEffect, useState } from "react";
 export default function Dialog() {
   const { sala, identificador, disciplina, horario } = useLocalSearchParams();
   const router = useRouter();
-  const [session, setSession] = useState<Session | null>(null); 
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [novaSala, setNovaSala] = useState(sala as string);
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -78,15 +80,28 @@ export default function Dialog() {
                 label="Sala"
                 mode="outlined"
                 style={{ width: '100%' }}
-                value={sala as string}
+                defaultValue={sala as string}
+                onChangeText={setNovaSala}
             />
             <Button
                 mode="contained"
                 buttonColor="#000000"
+                loading={loading}
                 style={{ marginTop: 16, width: '100%' }}
                 onPress={
-                    () => {
-                      router.navigate('/Login');
+                    async () => {
+                      setLoading(true);
+                      const { data, error } = await supabase
+                        .from('alocacao_2025_2')
+                        .update({ sala: novaSala })
+                        .eq('id', identificador);
+                      if (error) {
+                        alert('Erro ao atualizar a sala: ' + error.message);
+                      } else {
+                        alert('Sala atualizada com sucesso!');
+                        router.back();
+                      }
+                      setLoading(false);
                     }
                 }
             >
