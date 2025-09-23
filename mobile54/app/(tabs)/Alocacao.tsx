@@ -47,17 +47,17 @@ export default function Alocacao() {
     const [sabado,setSabado] = useState([]);
     const [showModal, setShowModal] = useState(false);
     useEffect(() => {
-    const fetchSalas = async () => {
-      const { data, error } = await supabase.from("alocacao_2025_2").select("*");
-      if (error) {
-        console.error("Error fetching salas:", error);
-        setCarregando(false);
-      } else {
-        setSalas(data);
-        setCarregando(false);
+      const fetchSalas = async () => {
+        const { data, error } = await supabase.from("alocacao_2025_2").select("*");
+        if (error) {
+          console.error("Error fetching salas:", error);
+          setCarregando(false);
+        } else {
+          setSalas(data);
+          setCarregando(false);
+        }
       }
-    }
-    fetchSalas();
+      fetchSalas();
   }, [])
     useEffect(() => {
         const aplicarFiltro = async () => {
