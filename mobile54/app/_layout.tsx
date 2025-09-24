@@ -19,7 +19,7 @@ export default function RootLayout() {
         <Stack.Screen name="Dialog" options={{ headerShown: true, presentation: 'modal', title: 'Alterar' }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
-      <StatusBar style="auto" />
+      
     </ThemeProvider>
   );
 }
