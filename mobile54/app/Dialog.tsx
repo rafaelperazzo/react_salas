@@ -116,7 +116,7 @@ export default function Dialog() {
                 onPress={
                     async () => {
                       setLoading(true);
-                      const { data, error } = await supabase
+                      const { error } = await supabase
                         .from('alocacao_2025_2')
                         .update({ sala: novaSala })
                         .eq('id', identificador);
