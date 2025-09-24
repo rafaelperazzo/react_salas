@@ -22,7 +22,7 @@ function retornaHorarios(sala: any[],dia: string) {
   return retorno.sort();
 }
 
-function ocupacaoSala(todas: any[],sala: any[]) {
+function ocupacaoSala(todas: any[],sala: string[]) {
   sala = todas.filter((room) => room.sala === sala);
   const segunda = retornaHorarios(sala,"Segunda-feira");
   const terca = retornaHorarios(sala,"Terça-feira");
@@ -218,7 +218,7 @@ export default function Alocacao() {
                       <View style={styles.picker}>
                             <Picker
                               onValueChange={
-                                    (value) => { 
+                                    (value: string) => { 
                                       if(value === 'TODAS'){
                                         setFiltro_sala('');
                                       } else {
