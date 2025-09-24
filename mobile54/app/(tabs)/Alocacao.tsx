@@ -1,13 +1,14 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, MD2Colors, TextInput, PaperProvider, Button, Divider, Card } from 'react-native-paper';
-import { ScrollView, StyleSheet, Modal, View } from "react-native";
+import { ScrollView, StyleSheet, Modal, View, RefreshControl } from "react-native";
 import Entrada from "@/components/ui/Entrada";
 import {Picker} from '@react-native-picker/picker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import supabase from '../../database/database';
+import { storeObject } from "@/lib/Storage";
 
 function retornaHorarios(sala: any[],dia: string) {
   let retorno: string[] = [];
@@ -46,6 +47,21 @@ export default function Alocacao() {
     const [sexta,setSexta] = useState([]);
     const [sabado,setSabado] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const onRefresh = useCallback(() => {
+      setCarregando(true);
+      const fetchSalas = async () => {
+        const { data, error } = await supabase.from("alocacao_2025_2").select("*");
+        if (error) {
+          console.error("Error fetching salas:", error);
+          setCarregando(false);
+        } else {
+          setSalas(data);
+          await storeObject('salas',data);
+          setCarregando(false);
+        }
+      }
+      fetchSalas();
+    }, []);
     useEffect(() => {
       const fetchSalas = async () => {
         const { data, error } = await supabase.from("alocacao_2025_2").select("*");
@@ -54,6 +70,7 @@ export default function Alocacao() {
           setCarregando(false);
         } else {
           setSalas(data);
+          await storeObject('salas',data);
           setCarregando(false);
         }
       }
@@ -61,30 +78,31 @@ export default function Alocacao() {
   }, [])
     useEffect(() => {
         const aplicarFiltro = async () => {
-        const busca = filtro;
-        const resultados = salas.filter((sala) => sala.disciplina.toLowerCase().includes(busca.toLowerCase()));
-        setDados(resultados);
+          const busca = filtro;
+          const resultados = salas.filter((sala) => sala.disciplina.toLowerCase().includes(busca.toLowerCase()));
+          setDados(resultados);
         }
         aplicarFiltro()
     }, [salas,filtro])
     useEffect(() => {
         const aplicarFiltroSala = async () => {
-        const busca = filtro_sala;
-        //const resultados = salas.filter((sala) => sala.sala.toLowerCase().includes(busca.toLowerCase()));
-        const resultados = salas.filter((sala) => sala.sala.toLowerCase()===busca.toLowerCase() || busca === '');
-        setDados(resultados);
+          const busca = filtro_sala;
+          //const resultados = salas.filter((sala) => sala.sala.toLowerCase().includes(busca.toLowerCase()));
+          const resultados = salas.filter((sala) => sala.sala.toLowerCase()===busca.toLowerCase() || busca === '');
+          setDados(resultados);
         }
         aplicarFiltroSala()
     }, [salas,filtro_sala])
     useEffect(() => {
         const fetch_lista_salas = async () => {
-        const { data, error } = await supabase.from("salas").select("*").order('sala', { ascending: true });
-        if (error) {
-            console.error("Error fetching lista_salas:", error);
-        } else {
-            setLista_salas(data);
-            setCarregando(false);
-        }
+          const { data, error } = await supabase.from("salas").select("*").order('sala', { ascending: true });
+          if (error) {
+              console.error("Error fetching lista_salas:", error);
+          } else {
+              setLista_salas(data);
+              await storeObject('lista_salas',data);
+              setCarregando(false);
+          }
         }
         fetch_lista_salas();
     }, [])
@@ -181,7 +199,11 @@ export default function Alocacao() {
         <PaperProvider>
           <SafeAreaProvider>
               <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }} edges={['right', 'top', 'left']}>
-                  <ScrollView>
+                  <ScrollView
+                    refreshControl={
+                      <RefreshControl refreshing={carregando} onRefresh={onRefresh} />
+                    }
+                  >
                       <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
                           <ThemedText type="title">Alocação de Salas</ThemedText>
                           <ActivityIndicator animating={carregando} color={MD2Colors.blue500} />

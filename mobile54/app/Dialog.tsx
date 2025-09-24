@@ -1,10 +1,12 @@
 import { View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import {Text, TextInput, Button} from 'react-native-paper';
+import {Text, Button} from 'react-native-paper';
 import supabase from "@/database/database";
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from "react";
+import { getObject } from "@/lib/Storage";
+import { Picker } from "@react-native-picker/picker";
 
 export default function Dialog() {
   const { sala, identificador, disciplina, horario } = useLocalSearchParams();
@@ -12,6 +14,7 @@ export default function Dialog() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
   const [novaSala, setNovaSala] = useState(sala as string);
+  const [lista_salas, setLista_salas] = useState<any[]>([]);
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -20,6 +23,15 @@ export default function Dialog() {
       setSession(session)
     });
   }, [])
+  useEffect(() => {
+    const fetch_lista_salas = async () => {
+      const salas_armazenadas = await getObject('lista_salas');
+      if (salas_armazenadas) {
+        setLista_salas(salas_armazenadas);
+      }
+    };
+    fetch_lista_salas();
+  }, []);
   if (!session) {
     return (
       <View style={{
@@ -76,13 +88,26 @@ export default function Dialog() {
             backgroundColor: "white",
           }}
         >
-            <TextInput
-                label="Sala"
-                mode="outlined"
-                style={{ width: '100%' }}
-                defaultValue={sala as string}
-                onChangeText={setNovaSala}
-            />
+            <View style=
+              {{ width: '100%', marginTop: 16,
+                borderWidth: 1,
+                borderColor: 'gray',
+                borderRadius: 4,
+               }}
+            >
+              <Picker
+                  selectedValue={novaSala}
+                  onValueChange={(itemValue, itemIndex) => setNovaSala(itemValue)}
+                  style={{ 
+                    width: '100%',
+                  }}
+              >
+                  <Picker.Item label="Selecione uma sala" value="" />
+                  {lista_salas.map((sala) => (
+                      <Picker.Item key={sala.id} label={sala.sala} value={sala.sala} />
+                  ))}
+              </Picker>
+            </View>
             <Button
                 mode="contained"
                 buttonColor="#000000"
@@ -99,7 +124,7 @@ export default function Dialog() {
                         alert('Erro ao atualizar a sala: ' + error.message);
                       } else {
                         alert('Sala atualizada com sucesso!');
-                        router.back();
+                        router.replace('/(tabs)/Alocacao');
                       }
                       setLoading(false);
                     }
