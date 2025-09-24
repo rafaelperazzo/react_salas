@@ -40,12 +40,12 @@ export default function Alocacao() {
     const [dados,setDados] = useState<any[]>([]);
     const [lista_salas,setLista_salas] = useState<any[]>([]);
     const [filtro_sala,setFiltro_sala] = useState('');
-    const [segunda,setSegunda] = useState([]);
-    const [terca,setTerca] = useState([]);
-    const [quarta,setQuarta] = useState([]);
-    const [quinta,setQuinta] = useState([]);
-    const [sexta,setSexta] = useState([]);
-    const [sabado,setSabado] = useState([]);
+    const [segunda,setSegunda] = useState<string[]>([]);
+    const [terca,setTerca] = useState<string[]>([]);
+    const [quarta,setQuarta] = useState<string[]>([]);
+    const [quinta,setQuinta] = useState<string[]>([]);
+    const [sexta,setSexta] = useState<string[]>([]);
+    const [sabado,setSabado] = useState<string[]>([]);
     const [showModal, setShowModal] = useState(false);
     const onRefresh = useCallback(() => {
       setCarregando(true);
@@ -222,7 +222,7 @@ export default function Alocacao() {
                                       if(value === 'TODAS'){
                                         setFiltro_sala('');
                                       } else {
-                                        setFiltro_sala(value);
+                                        setFiltro_sala(value as string);
                                         const mapa = ocupacaoSala(salas, value);
                                         setSegunda(mapa[0]);
                                         setTerca(mapa[1]);
