@@ -58,7 +58,7 @@ export default function Auth() {
             mode="contained"
             onPress={ () => {
                 signInWithEmail();
-                router.navigate('/(tabs)/Alocacao');
+                router.replace('/(tabs)/Alocacao');
             }}
             loading={loading}
             buttonColor='#000000'
