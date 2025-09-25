@@ -54,6 +54,12 @@
         "projectId": "48c78ec4-6987-4afc-a95c-eea3ee9aae1c"
       }
     },
-    "owner": "rafaelperazzo"
+    "owner": "rafaelperazzo",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/48c78ec4-6987-4afc-a95c-eea3ee9aae1c"
+    }
   }
 }
