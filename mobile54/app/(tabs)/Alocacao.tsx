@@ -241,7 +241,13 @@ export default function Alocacao() {
                             </Picker>
                             
                       </View>
-                      <ThemedView style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+                      <ThemedView 
+                        style={{ 
+                          flex: 1, 
+                          justifyContent: 'flex-start', 
+                          alignItems: 'center',
+                        }}
+                      >
                         <Button
                             mode="contained"
                             buttonColor='#000000'
@@ -249,7 +255,6 @@ export default function Alocacao() {
                         >
                           Mapa semanal
                         </Button>
-                        
                       </ThemedView>
                       <SafeAreaView>
                         <Modal

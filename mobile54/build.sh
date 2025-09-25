@@ -1,2 +1,2 @@
 #eas build --platform android --profile production
-eas build --platform android --profile production --auto-submit
+eas build --platform android --auto-submit
