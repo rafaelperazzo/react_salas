@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Appearance, View } from 'react-native';
+import { StyleSheet, Appearance, View, BackHandler,Alert } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Text } from 'react-native-paper';
@@ -24,6 +24,24 @@ export default function HomeScreen() {
       setSession(session)
     });
   }, [])
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Confirmação', 'Fechar o aplicativo?', [
+        {
+          text: 'CANCELAR',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'SIM', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }} edges={['right', 'top', 'left']}>
@@ -63,6 +81,22 @@ export default function HomeScreen() {
               }}
             >
               Alocação de Salas
+            </Button>
+            <Button 
+              mode="contained"
+              buttonColor='#f70404ff'
+              onPress={() => {
+                Alert.alert('Confirmação', 'Fechar o aplicativo?', [
+                {
+                  text: 'CANCELAR',
+                  onPress: () => null,
+                  style: 'cancel',
+                },
+                {text: 'SIM', onPress: () => BackHandler.exitApp()},
+              ]);
+              }}
+            >
+              Fechar
             </Button>
           </View>
           <View style={styles.rodape}>
