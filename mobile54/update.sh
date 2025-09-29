@@ -1,1 +1,1 @@
-eas update --channel production --message "Atualização disponível"
+eas update --channel production --message "Atualização disponível" --platform android
