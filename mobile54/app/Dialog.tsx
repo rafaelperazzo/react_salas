@@ -33,6 +33,7 @@ export default function Dialog() {
   const [loading, setLoading] = useState(false);
   const [novaSala, setNovaSala] = useState(sala as string);
   const [lista_salas, setLista_salas] = useState<any[]>([]);
+  const [lista_salas_livres, setLista_salas_livres] = useState<any[]>([]);
   const [choque, setChoque] = useState('');
   const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
   async function verificar_choque(sala_nova: string) {
@@ -76,6 +77,26 @@ export default function Dialog() {
     };
     fetch_lista_salas();
   }, []);
+  useEffect(() => {
+    const salas_livres = async () => {
+      const todas = await getObject('salas');
+      const salas_conflitantes: string[] = [];
+      for (let i = 0; i < lista_salas.length; i++) {
+        const filtrada = todas.filter((sala: any) => sala.sala === lista_salas[i].sala);
+        const filtrada_dia = filtrada.filter((sala: any) => sala.dia == dia);
+        for (let j = 0; j < filtrada_dia.length; j++) {
+          if (intervaloConflita(filtrada_dia[j].hora, hora as string)) {
+            if (lista_salas[i].sala !== (sala as string)) {
+              salas_conflitantes.push(lista_salas[i].sala);
+            }
+          }
+        }
+      }
+      const salas_disponiveis = lista_salas.filter((sala) => !salas_conflitantes.includes(sala.sala));
+      setLista_salas_livres(salas_disponiveis);
+    };
+    salas_livres();
+  }, [dia, hora, lista_salas]);
   if (!session) {
     return (
       <View style={{
@@ -150,9 +171,8 @@ export default function Dialog() {
                     width: '100%',
                   }}
               >
-                  <Picker.Item label="Selecione uma sala" value="" />
-                  {lista_salas.map((sala) => (
-                      <Picker.Item key={sala.id} label={sala.sala} value={sala.sala} />
+                  {lista_salas_livres.map((sala, index) => (
+                      <Picker.Item key={index} label={sala.sala} value={sala.sala} />
                   ))}
               </Picker>
             </View>
