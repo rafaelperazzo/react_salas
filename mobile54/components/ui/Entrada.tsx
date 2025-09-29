@@ -7,6 +7,8 @@ type EntradaProps = {
     sala: string;
     horario: string;
     identificador: string;
+    dia: number;
+    hora: string;
 };
 
 export default function Entrada(props: EntradaProps) {
@@ -30,7 +32,7 @@ export default function Entrada(props: EntradaProps) {
                                         router.push('/Login');
                                     }
                                     else {
-                                        router.push(`/Dialog?sala=${encodeURIComponent(props.sala)}&identificador=${encodeURIComponent(props.identificador)}&disciplina=${encodeURIComponent(props.disciplina)}&horario=${encodeURIComponent(props.horario)}`);
+                                        router.push(`/Dialog?sala=${encodeURIComponent(props.sala)}&identificador=${encodeURIComponent(props.identificador)}&disciplina=${encodeURIComponent(props.disciplina)}&horario=${encodeURIComponent(props.horario)}&dia=${encodeURIComponent(props.dia)}&hora=${encodeURIComponent(props.hora)}`);
                                     }
                                 }
                             }

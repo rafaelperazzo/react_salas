@@ -8,13 +8,57 @@ import { useEffect, useState } from "react";
 import { getObject } from "@/lib/Storage";
 import { Picker } from "@react-native-picker/picker";
 
+function paraMinutos(hora: string): number {
+  const [h, m] = hora.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function intervaloConflita(intervalo1: string, intervalo2: string): boolean {
+  // Espera formato "HH:MM-HH:MM"
+  const [inicio1, fim1] = intervalo1.split("-");
+  const [inicio2, fim2] = intervalo2.split("-");
+
+  const i1 = paraMinutos(inicio1);
+  const f1 = paraMinutos(fim1);
+  const i2 = paraMinutos(inicio2);
+  const f2 = paraMinutos(fim2);
+
+  return i1 < f2 && i2 < f1;
+}
+
 export default function Dialog() {
-  const { sala, identificador, disciplina, horario } = useLocalSearchParams();
+  const { sala, identificador, disciplina, horario, dia, hora } = useLocalSearchParams();
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
   const [novaSala, setNovaSala] = useState(sala as string);
   const [lista_salas, setLista_salas] = useState<any[]>([]);
+  const [choque, setChoque] = useState('');
+  const [botaoDesabilitado, setBotaoDesabilitado] = useState(false);
+  async function verificar_choque(sala_nova: string) {
+    const horario = hora as string;
+    setLoading(true);
+    const { data,error } = await supabase.from('alocacao_2025_2')
+      .select('dia,hora,disciplina')
+      .eq('sala', sala_nova)
+      .eq('dia', dia);
+    setLoading(false);
+    if (error) {
+      console.error('Erro ao verificar choque de sala:', error);
+      return false; // Em caso de erro, assume que não há choque
+    }
+    if (data && data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        if (intervaloConflita(data[i].hora, horario)) {
+          setChoque(`Há um choque de horário: ${data[i].hora} - ${data[i].disciplina}`);
+          setBotaoDesabilitado(true);
+          return true; // Há choque
+        }
+      }
+    }
+    setBotaoDesabilitado(false);
+    return false; // Sem choque
+  }
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -97,7 +141,11 @@ export default function Dialog() {
             >
               <Picker
                   selectedValue={novaSala}
-                  onValueChange={(itemValue, itemIndex) => setNovaSala(itemValue)}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setNovaSala(itemValue);
+                    verificar_choque(itemValue);
+                  }
+                }
                   style={{ 
                     width: '100%',
                   }}
@@ -112,6 +160,7 @@ export default function Dialog() {
                 mode="contained"
                 buttonColor="#000000"
                 loading={loading}
+                disabled={botaoDesabilitado}
                 style={{ marginTop: 16, width: '100%' }}
                 onPress={
                     async () => {
@@ -132,6 +181,7 @@ export default function Dialog() {
             >
                 Confirmar
             </Button>
+            <Text variant="bodyMedium" style={{ marginTop: 16, color: 'red', textAlign: 'center' }}>{choque}</Text>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

@@ -50,7 +50,9 @@ export default function Alocacao() {
     const onRefresh = useCallback(() => {
       setCarregando(true);
       const fetchSalas = async () => {
-        const { data, error } = await supabase.from("alocacao_2025_2").select("*");
+        const { data, error } = await supabase.from("alocacao_2025_2").select("*")
+        .order('dia', { ascending: true })
+        .order('hora', { ascending: true });
         if (error) {
           console.error("Error fetching salas:", error);
           setCarregando(false);
@@ -64,7 +66,9 @@ export default function Alocacao() {
     }, []);
     useEffect(() => {
       const fetchSalas = async () => {
-        const { data, error } = await supabase.from("alocacao_2025_2").select("*");
+        const { data, error } = await supabase.from("alocacao_2025_2").select("*")
+        .order('dia', { ascending: true })
+        .order('hora', { ascending: true });
         if (error) {
           console.error("Error fetching salas:", error);
           setCarregando(false);
@@ -114,6 +118,8 @@ export default function Alocacao() {
                 disciplina={sala.disciplina}
                 sala={sala.sala}
                 horario={sala.horario}
+                dia={sala.dia}
+                hora={sala.hora}
             />
         ));
     }
